@@ -1,4 +1,7 @@
-# remiolsen/radqc
+# remiolsen/radqc_dev
+
+> [!WARNING]
+> This not a maintained fork of this pipeline. The repo has been moved to https://github.com/NationalGenomicsInfrastructure/radQC/
 
 ## Introduction
 
