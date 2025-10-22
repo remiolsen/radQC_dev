@@ -23,7 +23,7 @@ from itertools import chain
 
 r1_suffixes = ['_R1_', '_1.']
 r2_suffixes = ['_R2_', '_2.']
-
+pop_name = 'radQC'
 
 def main(in_folder, prefix_regex, out_samplesheet):
     # Get all fastq files in all subfolders
@@ -57,7 +57,7 @@ def main(in_folder, prefix_regex, out_samplesheet):
     # Write samplesheet
     with open(out_samplesheet, 'w') as out_f:
         writer = csv.writer(out_f)
-        writer.writerow(['sample', 'fastq_1', 'fastq_2'])
+        writer.writerow(['sample', 'population', 'fastq_1', 'fastq_2'])
         for prefix, files in prefix_groups.items():
             # Sort files by lane
             files.sort()
@@ -70,7 +70,7 @@ def main(in_folder, prefix_regex, out_samplesheet):
                 continue
             # Write paired files to samplesheet
             for r1, r2 in zip(r1_files, r2_files):
-                writer.writerow([prefix, r1, r2])
+                writer.writerow([prefix, pop_name, r1, r2])
 
 
 if __name__ == '__main__':
