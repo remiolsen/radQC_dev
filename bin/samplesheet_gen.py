@@ -28,9 +28,20 @@ r2_suffixes = ['_R2_', '_2.']
 def main(in_folder, prefix_regex, out_samplesheet):
     # Get all fastq files in all subfolders
     fastq_files = os.walk(in_folder)
-    fastq_files = [os.path.join(root, f) for root, _, files in fastq_files for f in files if f.endswith('.fastq.gz')]
+    fastq_files = [os.path.join(root, f) for root, _, files in fastq_files for f in files if f.lower().endswith(('.fastq.gz', '.fq.gz'))]
+
     # Group files by prefix
-    prefix_re = re.compile(prefix_regex)
+    # Find the basename first, then compile the regex and apply it to the basename.
+    class _BasenamePrefixMatcher:
+        def __init__(self, pattern):
+            self._pattern = pattern
+
+        def search(self, path):
+            basename = os.path.basename(path)
+            # compile after getting the basename (pattern stays the same)
+            return re.compile(self._pattern).search(basename)
+
+    prefix_re = _BasenamePrefixMatcher(prefix_regex)
     prefix_groups = {}
     for f in fastq_files:
         m = prefix_re.search(f)
